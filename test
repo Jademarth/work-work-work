@@ -1,0 +1,12 @@
+from pydub import AudioSegment as AS
+import numpy as np
+
+
+sound = AS.from_file('noo.mp3', format='mp3')
+
+for step in np.linspace(0,1,13):
+    new_sample_rate = int(sound.frame_rate * (2.0 ** step))
+    hipitch_sound = sound._spawn(sound.raw_data, overrides={'frame_rate': new_sample_rate})
+    hipitch_sound = hipitch_sound.set_frame_rate(44100)
+#export / save pitch changed sound
+    hipitch_sound.export(f"step_{step*13}.mp3", format="mp3")
